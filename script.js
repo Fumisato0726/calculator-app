@@ -3,6 +3,8 @@ let operator = "";
 let previousInput = "";
 
 function appendNumber(num) {
+    if ( currentInput === "0") 
+    currentInput = "";
     currentInput += num;
     updateDisplay();
 }
@@ -19,32 +21,32 @@ function chooseOperator(op) {
 }
 
 function updateDisplay() {
+    let maxLength = 14;
     let displayValue = previousInput + " " + operator + " " + currentInput;
-    document.getElementById("display").textContent = displayValue.trim();
+    document.getElementById("display").textContent = displayValue.trim().substring(0, maxLength); //表示する最大文字数を指定
 }
 
 function clearDisplay() {
     currentInput = "";
     operator = "";
     previousInput = "";
-    updateDisplay();
+    display.innerText = "0";
 }
 
 function calculate() {
     if (previousInput === "" || currentInput === "" || operator === "") return;
     
     let result;
-    let num1 = parseFloat(previousInput);
-    let num2 = parseFloat(currentInput);
+    let previousNum = parseFloat(previousInput);
+    let currentNum = parseFloat(currentInput);
 
     switch (operator) {
-        case "+": result = num1 + num2; break;
-        case "-": result = num1 - num2; break;
-        case "*": result = num1 * num2; break;
-        case "/": result = num2 !== 0 ? num1 / num2 : "Error"; break;
+        case "+": result = previousNum + currentNum; break;
+        case "-": result = previousNum - currentNum; break;
+        case "*": result = previousNum * currentNum; break;
+        case "/": result = currentNum !== 0 ? previousNum / currentNum : "Error"; break;
         default: return;
     }
-
     currentInput = result.toString();
     operator = "";
     previousInput = "";
