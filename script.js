@@ -1,56 +1,52 @@
 let currentInput = "";
+let operator = "";
 let previousInput = "";
-let operator = null;
 
-const display = document.getElementById("display");
-
-function appendNumber(number) {
-    currentInput += number;
-    display.innerText = currentInput;
+function appendNumber(num) {
+    currentInput += num;
+    updateDisplay();
 }
 
 function chooseOperator(op) {
-    if (currentInput === "") return;
-    if (previousInput !== "") {
-        calculate();
-    }
+    if (currentInput === "") return; // 数字なしで演算子を押したら無視
+    if (operator !== "") return; // すでに演算子がある場合は無視
+
     operator = op;
     previousInput = currentInput;
     currentInput = "";
+
+    updateDisplay();
 }
 
-function calculate() {
-    let result;
-    const prev = parseFloat(previousInput);
-    const current = parseFloat(currentInput);
-    if (isNaN(prev) || isNaN(current)) return;
-    
-    switch (operator) {
-        case "+":
-            result = prev + current;
-            break;
-        case "-":
-            result = prev - current;
-            break;
-        case "*":
-            result = prev * current;
-            break;
-        case "/":
-            result = prev / current;
-            break;
-        default:
-            return;
-    }
-    
-    currentInput = result.toString();
-    operator = null;
-    previousInput = "";
-    display.innerText = currentInput;
+function updateDisplay() {
+    let displayValue = previousInput + " " + operator + " " + currentInput;
+    document.getElementById("display").textContent = displayValue.trim();
 }
 
 function clearDisplay() {
     currentInput = "";
+    operator = "";
     previousInput = "";
-    operator = null;
-    display.innerText = "0";
+    updateDisplay();
+}
+
+function calculate() {
+    if (previousInput === "" || currentInput === "" || operator === "") return;
+    
+    let result;
+    let num1 = parseFloat(previousInput);
+    let num2 = parseFloat(currentInput);
+
+    switch (operator) {
+        case "+": result = num1 + num2; break;
+        case "-": result = num1 - num2; break;
+        case "*": result = num1 * num2; break;
+        case "/": result = num2 !== 0 ? num1 / num2 : "Error"; break;
+        default: return;
+    }
+
+    currentInput = result.toString();
+    operator = "";
+    previousInput = "";
+    updateDisplay();
 }
