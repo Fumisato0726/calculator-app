@@ -9,3 +9,6 @@
 1. Clone the repository
 
    git clone https://github.com/Fumisato0726/calculator-app.git
+2. Publish as a web app
+
+   https://Fumisato0726.github.io/calculator-app
